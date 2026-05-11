@@ -1,0 +1,700 @@
+/*
+ * LPスタイルシート（BtoB・一般向け）
+ * 黒を基調とした高級感のあるデザインに、柔らかな光の演出を加えています。
+ */
+
+/* カラーパレット */
+:root {
+    --primary: #f5f5f5;      /* 見出し用の明るい色 */
+    --secondary: #000000;    /* 背景用の黒 */
+    --accent: #C8A057;       /* 上品なゴールド */
+    --accent-dark: #A98948;  /* ゴールドのホバー用 */
+    --text: #cccccc;         /* 本文テキスト */
+}
+
+/* ページをスクロール不可にする */
+html, body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* リセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    background-color: var(--secondary);
+    line-height: 1.7;
+}
+
+/* ページ全体がスクロールしないようにする */
+html, body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: var(--accent);
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* ヘッダー */
+header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--secondary);
+    border-bottom: 1px solid #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+header .logo {
+    display: flex;
+    align-items: center;
+}
+header .logo img {
+    width: 40px;
+    height: auto;
+    margin-right: 0.5rem;
+    /* 黒背景でもロゴが見えるよう反転 */
+    filter: invert(1);
+}
+header .logo span {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+header nav a {
+    font-size: 0.9rem;
+    color: var(--primary);
+    font-weight: 500;
+}
+header nav a:hover {
+    color: var(--accent);
+}
+
+/* ヘッダー右側のナビゲーションを非表示にする */
+header nav {
+    display: none;
+}
+
+/* ヒーローセクション */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* 高さはフェードアウトのアニメーションで変化させるため指定しない */
+    height: 75vh;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow: hidden;
+    /* 背景画像に薄いオーバーレイを重ねて、画像をより鮮明に見せる */
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('../images/bg-07.png') no-repeat center center/cover;
+    color: var(--primary);
+
+/* ヒーローを丁寧にフェードインさせ、現れた後にフェードアウトさせる */
+    /* ヒーロー画像は約8秒かけて現れ、波紋が収まるタイミングで滑らかに消えていく */
+    /* ヒーロー画像の表示を2秒長くし、フェードアウトを10秒後に開始 */
+    animation: heroReveal 8s ease-out forwards, fadeOutHero 1.5s ease-out 10s forwards;
+}
+
+/* ヒーロー画像をフェードアウトさせる */
+@keyframes fadeOutHero {
+    from {
+        opacity: 1;
+        height: 75vh;
+    }
+    to {
+        /* 高さを保ったまま全体がフェードアウトする */
+        opacity: 0;
+        height: 75vh;
+    }
+}
+
+/* ヒーローセクションの丁寧なフェードイン */
+@keyframes heroReveal {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ヒーローセクションに一滴の水滴が落ちて波紋が広がる演出 */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 円形のグラデーションで波紋を表現（中心は明るく、外側は透明） */
+    background: radial-gradient(circle, rgba(255,255,255,0.6) 10%, rgba(255,255,255,0) 60%);
+    transform: scale(0);
+    opacity: 1;
+    /* 波紋がゆっくり広がるように演出を長めにする（ヒーローと同じ8秒） */
+    animation: dropRipple 8s ease-out forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ヒーロー消失時の波紋効果 */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 黒色の波紋で徐々に暗くする */
+    background: radial-gradient(circle, rgba(0,0,0,0.4) 10%, rgba(0,0,0,0) 60%);
+    transform: scale(0);
+    opacity: 0;
+    animation: dropRippleOut 8s ease-out 10s forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes dropRippleOut {
+    0% {
+        transform: scale(0);
+        opacity: 0.8;
+    }
+    80% {
+        transform: scale(5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(7);
+        opacity: 0;
+    }
+}
+
+
+@keyframes dropRipple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    80% {
+        /* 少しゆっくりと大きく波紋が広がる */
+        transform: scale(5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(7);
+        opacity: 0;
+    }
+}
+
+@keyframes moveLight {
+    from { transform: translate(-10%, -10%); }
+    to   { transform: translate(10%, 10%); }
+}
+
+/*
+ * ヒーロー内の見出し
+ * 2行目以降を左揃えにするために text-align:left を指定し、
+ * 最大幅を指定して中央に配置します。
+ */
+.hero-content h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    max-width: 760px;
+    /* 左寄せにするため margin-left は 0 にし、右側にのみ自動マージンを付ける */
+    margin-left: 0;
+    margin-right: auto;
+    text-align: left;
+}
+
+/* ヒーロー内のテキストコンテンツをオーバーレイの上に表示する */
+.hero-content {
+    position: relative;
+    /* 波紋オーバーレイより手前に表示するため z-index を上げる */
+    z-index: 2;
+}
+.hero-content p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    max-width: 760px;
+    /* 段落も左寄せにし、右側だけ自動マージンにする */
+    margin-left: 0;
+    margin-right: auto;
+    /* 2行目以降は左揃えにするために text-align を left に設定 */
+    text-align: left;
+}
+
+/* ヒーロー内のテキストにフェードイン・アウトのアニメーションを追加 */
+.hero-content {
+    /* 遅れて表示され、消える際もふわっと移動しながらフェード */
+    animation: heroTextIn 2s ease-out 2s forwards, heroTextOut 2s ease-out 10s forwards;
+}
+
+@keyframes heroTextIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroTextOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* セクション共通 */
+section {
+    padding: 3rem 1rem;
+}
+.section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--primary);
+}
+.inner {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    /* 全体の見出しは中央だが、本文は左揃えにする */
+    text-align: center;
+}
+
+/* 各文章（パラグラフ）は左揃えにする */
+.inner p {
+    text-align: left;
+}
+
+/* ギャラリーのキャプションを左揃えに */
+.gallery-caption {
+    text-align: left;
+}
+
+/* 相談セクションの説明文も左揃えに */
+#contact p {
+    text-align: left;
+}
+
+/* 不安セクション */
+.risks {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+.risk h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+.risk p {
+    font-size: 0.95rem;
+    color: var(--text);
+}
+@media (min-width: 768px) {
+    .risks {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .risk { flex: 1; }
+}
+
+/* 解決策セクション */
+.alt-bg {
+    background-color: var(--secondary);
+}
+.solutions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+.solution h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+.solution p {
+    font-size: 0.95rem;
+}
+@media (min-width: 768px) {
+    .solutions {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .solution { flex: 1; }
+}
+
+/* ギャラリー */
+.gallery {
+    display: grid;
+    /* 常に3列×2行で配置するため、カラム数を固定 */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+.gallery-item img {
+    width: 100%;
+    /* 画像の表示サイズを調整してキャプションが見えるようにする */
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+.gallery-caption {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    text-align: center;
+}
+
+/* FAQ セクション */
+.faq {
+    margin-top: 2rem;
+}
+.faq-item {
+    margin-bottom: 1.5rem;
+}
+.faq-item h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: var(--accent);
+}
+.faq-item p {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+/* 会社情報を中央揃えにし、余白を追加 */
+.company-info {
+    margin-top: 2rem;
+    text-align: center;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+/* フローティングボタン */
+.floating-btn {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--accent);
+    color: var(--secondary);
+    padding: 0.75rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    z-index: 1001;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: background-color 0.3s;
+}
+.floating-btn:hover {
+    background-color: var(--accent-dark);
+}
+@media (max-width: 767px) {
+    .floating-btn {
+        right: 1rem;
+        top: auto;
+        bottom: 1.5rem;
+        transform: none;
+    }
+}
+
+/* フッター */
+footer {
+    background-color: var(--secondary);
+    border-top: 1px solid #222;
+    padding: 2rem 1rem;
+    color: var(--text);
+}
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.footer-inner strong {
+    color: var(--primary);
+}
+.copyright {
+    font-size: 0.75rem;
+    text-align: right;
+    color: var(--text);
+}
+
+/* FAQを中央寄せにする */
+.faq {
+    /* 質問と回答のコンテナ幅を制限し、中央に配置 */
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* FAQの各項目を中央揃えにする */
+.faq-item h3,
+.faq-item p {
+    text-align: center;
+}
+
+/* CTAセクションの見出しや文を中央寄せにする */
+#contact {
+    text-align: center;
+}
+
+/* 施工例セクションのみ少し上に寄せる */
+#gallery {
+    /* 施工例セクションをさらに上に寄せるためにマイナスのマージンを設定 */
+    padding-top: 0;
+    margin-top: -10vh;
+}
+
+/* セクションが紙芝居のように順番に現れて消える設定 */
+#risk,
+#solution,
+#gallery,
+#specs,
+#contact {
+    /* 初期状態は非表示とし、JavaScriptで表示・非表示を制御します */
+    opacity: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 上部寄せに変更 */
+    justify-content: flex-start;
+    /* 上に空間をあけて位置を上げる */
+    padding-top: 15vh;
+    text-align: center;
+}
+
+/* 各セクションに特定のアニメーションは設定しません。JavaScript側で表示制御を行います。 */
+
+/* 対応サイズ・費用セクションを中央寄せにする */
+#specs .inner {
+    text-align: center;
+}
+
+/* フルスクリーンオーバーレイ。最初は真っ黒でページを覆い、水滴が落ちて波紋が広がるようにページを明るくし、その後再び暗くする。*/
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 1);
+    /* 初期状態ではオーバーレイが全体を覆う */
+    clip-path: circle(150% at 50% 50%);
+    /* 波紋が広がってLPが現れる演出。暗転は JavaScript で制御します。 */
+    animation: revealLP 8s ease-out forwards;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* オーバーレイを暗転させるときに付与するクラス */
+.overlay.darken {
+    animation: darkenLP 6s ease-in forwards;
+}
+
+@keyframes revealLP {
+    /* 真っ黒な状態から中央の円を縮小させてLP全体を明るくする */
+    from { clip-path: circle(150% at 50% 50%); }
+    to   { clip-path: circle(0% at 50% 50%); }
+}
+
+@keyframes darkenLP {
+    /* LP全体が表示された後に再び暗くする */
+    from { clip-path: circle(0% at 50% 50%); }
+    to   { clip-path: circle(150% at 50% 50%); }
+}
+
+/* 最終的にロゴだけを残すためのスタイル */
+.final-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* 最後に表示するロゴ。初期は非表示で、JavaScriptで表示制御します */
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    z-index: 10;
+}
+.final-logo img {
+    width: 60px;
+    height: auto;
+    filter: invert(1);
+}
+.final-logo span {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-top: 0.5rem;
+}
+
+/* 最終ロゴの下に表示される相談ボタン */
+.final-logo .logo-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    background-color: var(--accent);
+    color: var(--secondary);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.3s, opacity 1s;
+    /* 最初は非表示 */
+    opacity: 0;
+}
+
+.final-logo .logo-btn:hover {
+    background-color: var(--accent-dark);
+}
+
+@keyframes showFinalLogo {
+    to { opacity: 1; }
+}
+
+/* 各セクションが順番に現れて消えるアニメーション */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* 最終ロゴを表示してすぐに消すアニメーション */
+@keyframes showAndHideLogo {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 最終ボタンを表示するアニメーション */
+@keyframes showFinalButton {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* セクションを動画のように順番に動かすアニメーション */
+
+/*
+ * スマートフォン縦表示向けの調整。
+ * 画面が狭い場合はレイアウトやフォントサイズを縮小し、
+ * ギャラリーのカラム数を減らして写真が見やすくなるようにします。
+ */
+@media (max-width: 600px) {
+    /* ヒーローの高さを少し低くし、余白を調整する */
+    .hero {
+        /* スマホではヒーロー画像が切れないよう高さを少し上げる */
+        height: 85vh;
+        padding: 1.5rem 1rem;
+    }
+    /* ヒーロー見出しと本文の文字サイズを縮小 */
+    .hero-content h1 {
+        /* スマホ表示では見出しを少し小さくして収まりを良くする */
+        font-size: 1.6rem;
+    }
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+    /* 各セクションを上に詰める */
+    #risk,
+    #solution,
+    #gallery,
+    #specs,
+    #contact {
+        padding-top: 10vh;
+    }
+    /* ギャラリーは2列表示にする */
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .gallery-item img {
+        height: 120px;
+    }
+    /* 施工例セクションを少し下げる調整 */
+    #gallery {
+        margin-top: -5vh;
+    }
+    /* FAQの幅を広めにし、中央寄せにする */
+    .faq {
+        max-width: 90%;
+    }
+    /* 会社情報のフォントサイズを小さめにする */
+    .company-info {
+        font-size: 0.9rem;
+    }
+
+    /* セクションタイトルを1行で表示できるようにさらに文字サイズを縮小し、折り返しを防ぎます */
+    .section-title {
+        font-size: 1.1rem;
+        /* 一行に収めるためテキストの折り返しを抑制 */
+        white-space: nowrap;
+    }
+
+    /* 相談セクションの見出しが長い場合でも1行で表示するために文字サイズを縮小し、折り返しを防ぎます */
+    #contact h2 {
+        font-size: 1.1rem;
+        white-space: nowrap;
+    }
+
+    /* 施工イメージセクションをさらに上に寄せる */
+    #gallery {
+        margin-top: -8vh;
+    }
+
+    /* FAQの見出しを1行で表示させるためフォントサイズを縮小し折り返しを防ぎます */
+    .faq-item h3 {
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+}
